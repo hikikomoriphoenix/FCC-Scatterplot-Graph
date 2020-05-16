@@ -4,25 +4,33 @@ fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 
 function showGraph(dataset) {
   const w = 800;
-  const h = 400;
+  const h = 600;
   const padding = 50;
   const parseYear = d3.timeParse("%Y");
   const parseTime = d3.timeParse("%M:%S");
 
   const legends = [
     ["green", "No doping allegations"],
-    ["purple", "Have doping allegations"]
+    ["MediumPurple", "Have doping allegations"]
   ];
 
+  const lessOneYear = yearDate => {
+    return yearDate.setYear(yearDate.getYear() - 1);
+  }
+
+  const moreSeconds = time => {
+    return time.setSeconds(time.getSeconds() + 10);
+  }
+
   const xScale = d3.scaleTime()
-    .domain([d3.min(dataset, d => parseYear(d.Year)),
+    .domain([lessOneYear(d3.min(dataset, d => parseYear(d.Year))),
       d3.max(dataset, d => parseYear(d.Year))
     ])
     .range([padding, w - padding]);
 
   const yScale = d3.scaleTime()
     .domain([d3.min(dataset, d => parseTime(d.Time)),
-      d3.max(dataset, d => parseTime(d.Time))
+      moreSeconds(d3.max(dataset, d => parseTime(d.Time)))
     ])
     .range([padding, h - padding]);
 
@@ -32,7 +40,7 @@ function showGraph(dataset) {
     .attr("width", w)
     .attr("height", h);
 
-    const tooltip = d3.select("#root")
+  const tooltip = d3.select("#root")
     .append("div")
     .attr("id", "tooltip");
 
@@ -91,11 +99,13 @@ function showGraph(dataset) {
 
   svg.append("g")
     .attr("id", "x-axis")
+    .attr("class", "axis")
     .attr("transform", `translate(${0}, ${h - padding})`)
     .call(xAxis);
 
   svg.append("g")
     .attr("id", "y-axis")
+    .attr("class", "axis")
     .attr("transform", `translate(${padding}, ${0})`)
     .call(yAxis);
 
@@ -108,8 +118,8 @@ function showGraph(dataset) {
     .attr("x", w - padding - 210)
     .attr("y", padding)
     .attr("fill", "transparent")
-    .attr("stroke", "#000")
-    .attr("stroke-width", 2)
+    .attr("stroke", "white")
+    .attr("stroke-width", 1)
 
   legendGroup.selectAll(".legend-color")
     .data(legends)
@@ -126,6 +136,7 @@ function showGraph(dataset) {
     .data(legends)
     .enter()
     .append("text")
+    .attr("fill", "white")
     .attr("x", w - padding - 170)
     .attr("y", (d, i) => padding + 35 + 25 * i)
     .text(d => d[1]);

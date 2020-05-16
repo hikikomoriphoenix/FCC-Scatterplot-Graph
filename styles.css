@@ -1,7 +1,13 @@
+html {
+  background: #333;
+}
+
 #root {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
+  font-family: "Roboto";
 }
 
 #tooltip {
@@ -10,4 +16,12 @@
   padding: 5px;
   opacity: 0;
   color: white;
+}
+
+.axis line, .axis path {
+  stroke: white;
+}
+
+.axis text {
+  fill: white;
 }
