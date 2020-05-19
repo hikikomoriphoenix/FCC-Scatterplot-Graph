@@ -5,7 +5,7 @@ fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/maste
 function showGraph(dataset) {
   const w = 800;
   const h = 600;
-  const padding = 50;
+  const padding = 70;
   const parseYear = d3.timeParse("%Y");
   const parseTime = d3.timeParse("%M:%S");
 
@@ -101,13 +101,25 @@ function showGraph(dataset) {
     .attr("id", "x-axis")
     .attr("class", "axis")
     .attr("transform", `translate(${0}, ${h - padding})`)
-    .call(xAxis);
+    .call(xAxis)
+    .append("text")
+    .text("Year")
+    .style("text-anchor", "middle")
+    .style("font-size", "18px")
+    .attr("fill", "white")
+    .attr("transform", `translate(${w/2}, ${50})`);
 
   svg.append("g")
     .attr("id", "y-axis")
     .attr("class", "axis")
     .attr("transform", `translate(${padding}, ${0})`)
-    .call(yAxis);
+    .call(yAxis)
+    .append("text")
+    .text("Time")
+    .style("text-anchor", "middle")
+    .style("font-size", "18px")
+    .attr("fill", "white")
+    .attr("transform", `translate(${-50}, ${h/2})rotate(-90)`);
 
   const legendGroup = svg.append("g")
     .attr("id", "legend");
